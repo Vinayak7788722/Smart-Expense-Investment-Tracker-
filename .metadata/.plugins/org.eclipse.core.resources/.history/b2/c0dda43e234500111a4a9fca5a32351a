@@ -1,0 +1,72 @@
+package com.vinayak.finance_tracker.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.vinayak.finance_tracker.dto.ApiResponse;
+import com.vinayak.finance_tracker.dto.ExpenseDTO;
+import com.vinayak.finance_tracker.dto.ExpenseResponseDTO;
+import com.vinayak.finance_tracker.entity.Expense;
+import com.vinayak.finance_tracker.service.ExpenseService;
+
+import jakarta.validation.Valid;
+
+
+@RestController
+@RequestMapping("/expenses")
+public class ExpenseController {
+
+    private final ExpenseService service;
+
+    public ExpenseController(ExpenseService service) {
+        this.service = service;
+    }
+    @GetMapping
+    public ResponseEntity<ApiResponse<?>> getExpenses() {
+
+        return ResponseEntity.ok(
+            new ApiResponse<>(
+                "success",
+                "Expenses fetched successfully",
+                service.getAllExpenses()
+            )
+        );
+    }
+    @PostMapping
+    public ResponseEntity<ApiResponse<?>> addExpense(@Valid @RequestBody ExpenseDTO dto) {
+
+        Expense expense = new Expense();
+        expense.setCategory(dto.getCategory());
+        expense.setAmount(dto.getAmount());
+        expense.setDate(dto.getDate());
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ApiResponse<>(
+                        "success",
+                        "Expense created successfully",
+                        service.saveExpense(expense)
+                ));
+    }
+    @PutMapping("/{id}")
+    public ExpenseResponseDTO updateExpense(@PathVariable Long id,
+                                            @RequestBody ExpenseDTO dto) {
+        return service.updateExpense(id, dto);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
+        service.deleteExpense(id);
+        return ResponseEntity.ok("Deleted successfully");
+    }
+    @GetMapping("/category-summary")
+    public ResponseEntity<ApiResponse<?>> getCategorySummary() {
+
+        return ResponseEntity.ok(
+            new ApiResponse<>(
+                "success",
+                "Category summary fetched",
+                service.getCategorySummary()
+            )
+        );
+}
+}

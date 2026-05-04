@@ -1,0 +1,41 @@
+package com.vinayak.finance_tracker.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.vinayak.finance_tracker.dto.ExpenseDTO;
+import com.vinayak.finance_tracker.dto.ExpenseResponseDTO;
+import com.vinayak.finance_tracker.entity.Expense;
+import com.vinayak.finance_tracker.service.ExpenseService;
+
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/expenses")
+public class ExpenseController {
+
+    private final ExpenseService service;
+
+    public ExpenseController(ExpenseService service) {
+        this.service = service;
+    }
+    @GetMapping
+    public List<ExpenseResponseDTO> getExpenses() {
+        return service.getAllExpenses();
+    }
+    @PostMapping
+    public Expense addExpense(@RequestBody ExpenseDTO dto) {
+
+        Expense expense = new Expense();
+        expense.setCategory(dto.getCategory());
+        expense.setAmount(dto.getAmount());
+        expense.setDate(dto.getDate());
+
+        return service.saveExpense(expense);
+    }
+    @PutMapping("/{id}")
+    public ExpenseResponseDTO updateExpense(@PathVariable Long id,
+                                            @RequestBody ExpenseDTO dto) {
+        return service.updateExpense(id, dto);
+    }
+}

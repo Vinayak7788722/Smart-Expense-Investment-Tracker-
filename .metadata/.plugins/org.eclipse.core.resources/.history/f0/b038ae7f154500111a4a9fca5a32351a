@@ -1,0 +1,5 @@
+package com.vinayak.finance_tracker.entity;
+
+public class Expense {
+
+}

@@ -1,0 +1,51 @@
+package com.vinayak.finance_tracker.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.vinayak.finance_tracker.dto.LoginRequest;
+import com.vinayak.finance_tracker.entity.User;
+import com.vinayak.finance_tracker.repository.UserRepository;
+
+@CrossOrigin(origins = "http://localhost:3000")
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    @Autowired
+    private UserRepository userRepository;
+
+//    @PostMapping("/login")
+//    public String login(@RequestBody LoginRequest request) {
+//
+//        User user = userRepository.findByUsername(request.getUsername());
+//
+//        if (user != null && user.getPassword().equals(request.getPassword())) {
+//            return "Login Success";
+//        }
+//
+//        return "Invalid Credentials";
+//    }
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest request) {
+
+        System.out.println("USERNAME: " + request.getUsername());
+        System.out.println("PASSWORD: " + request.getPassword());
+        System.out.println("login api hit");
+
+        User user = userRepository.findByUsername(request.getUsername());
+
+        System.out.println("USER FOUND: " + user);
+
+        if (user != null && user.getPassword().equals(request.getPassword())) {
+            return "Login Success";
+        }
+
+        return "Invalid Credentials";
+        
+    }
+}

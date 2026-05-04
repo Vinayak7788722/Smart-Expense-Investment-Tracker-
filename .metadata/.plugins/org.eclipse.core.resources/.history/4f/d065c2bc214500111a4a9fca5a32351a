@@ -1,0 +1,75 @@
+package com.vinayak.finance_tracker.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.vinayak.finance_tracker.dto.CategorySummaryDTO;
+import com.vinayak.finance_tracker.dto.ExpenseDTO;
+import com.vinayak.finance_tracker.dto.ExpenseResponseDTO;
+import com.vinayak.finance_tracker.entity.Expense;
+import com.vinayak.finance_tracker.exception.ResourceNotFoundException;
+import com.vinayak.finance_tracker.repository.ExpenseRepository;
+
+@Service
+public class ExpenseService {
+
+    private final ExpenseRepository repo;
+
+    public ExpenseService(ExpenseRepository repo) {
+        this.repo = repo;
+    }
+
+    public Expense saveExpense(Expense expense) {
+        return repo.save(expense);
+    }
+
+    public List<ExpenseResponseDTO> getAllExpenses() {
+        return repo.findAll()
+        		.stream()
+        		.map(this::mapToDTO)
+        		.collect(Collectors.toList());
+    }
+
+    public ExpenseResponseDTO mapToDTO(Expense expense) {
+        ExpenseResponseDTO dto = new ExpenseResponseDTO();
+        dto.setId(expense.getId());
+        dto.setCategory(expense.getCategory());
+        dto.setAmount(expense.getAmount());
+        dto.setDate(expense.getDate());
+        return dto;
+    }
+    public ExpenseResponseDTO updateExpense(Long id, ExpenseDTO dto) {
+
+        Expense expense = repo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Expense not found with id: " + id));
+
+        expense.setCategory(dto.getCategory());
+        expense.setAmount(dto.getAmount());
+        expense.setDate(dto.getDate());
+
+        return mapToDTO(repo.save(expense));
+    }
+    
+    public void deleteExpense(Long id) {
+        if (!repo.existsById(id)) {
+            throw new RuntimeException("Expense not found");
+        }
+        repo.deleteById(id);
+    }
+    public List<CategorySummaryDTO> getCategorySummary() {
+
+        return repo.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        Expense::getCategory,
+                        Collectors.summingDouble(Expense::getAmount)
+                ))
+                .entrySet()
+                .stream()
+                .map(e -> new CategorySummaryDTO(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
+    }
+    
+}
