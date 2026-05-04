@@ -1,0 +1,135 @@
+/* Global Reset */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #65a3ff, #4f7cff);
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main container */
+.App {
+  padding: 20px;
+}
+
+/* Heading */
+h2 {
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+/* LOGIN BOX */
+.login-container {
+  width: 400px;
+  margin: auto;
+  margin-top: 80px;
+  padding: 35px;
+  background: rgba(5, 253, 108, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: fadeUp 0.8s ease;
+}
+
+.login-container h2 {
+  color: rgb(0, 0, 0);
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+.login-container input {
+  width: 80%;
+  padding: 14px;
+  margin: 10px 0;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+/* Cool Button */
+.login-container button {
+  width: 20%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ffffff, #7eabce);
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.login-container button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.login-container button:active {
+  transform: scale(0.98);
+}
+
+/* Cards container */
+.cards {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Individual card */
+.card {
+  background: #92f894;
+  padding: 20px;
+  width: 220px;
+  text-align: center;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Chart container */
+.chart-container {
+  background: #beebf1;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Chart title */
+.chart-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
